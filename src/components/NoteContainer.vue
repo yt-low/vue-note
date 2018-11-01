@@ -3,13 +3,11 @@
     <note-selectors 
       v-bind:notes="notes" 
       v-bind:transformedNotes="transformedNotes"
-      v-bind:selectedNote="selectedNote" 
-      v-on:selectNote="selectNote">
+      v-bind:selectedNote="selectedNote">
     </note-selectors>
 
     <note-editor 
       v-bind:selectedNote="selectedNote"
-      v-on:inputNoteEditor="inputNoteEditor"
     >
     </note-editor>
   </div>
@@ -27,12 +25,10 @@ export default {
   },
   props: ['notes', 'transformedNotes', 'selectedNote'],
   methods: {
-    selectNote: function(note) {
-      this.$emit('selectNote', note);
-    },
+    /*
     inputNoteEditor: function(body) {
       this.$emit('inputNoteEditor', body)
-    }
+    }*/
   }
 }
 </script>

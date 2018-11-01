@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import { EventBus } from '../EventBus.js'
 import NoteSelector from './NoteSelector'
 
 export default {
@@ -21,7 +22,7 @@ export default {
 	props: ['notes', 'transformedNotes', 'selectedNote'],
   	methods: {
   		selectNote: function(note) {
-  			this.$emit('selectNote', note);
+  			EventBus.$emit('selectNote', note);
   		}
   	}
 }

@@ -1,23 +1,19 @@
 <template>
   <div id="app">
     <toolbar
-      v-on:clickNew="createNote"
-      v-on:clickDelete="deleteNote"
       v-bind:searchNoteText="searchNoteText"
-      v-on:inputSearchNoteText="updateSearch"
     >
     </toolbar>
     <note-container 
       v-bind:notes="notes" 
       v-bind:transformedNotes="transformedNotes"
-      v-bind:selectedNote="selectedNote" 
-      v-on:selectNote="selectNote" 
-      v-on:inputNoteEditor="updateSelectedNote">
+      v-bind:selectedNote="selectedNote">
     </note-container>
   </div>
 </template>
 
 <script>
+import { EventBus } from './EventBus.js'
 import Toolbar from './components/Toolbar'
 import NoteContainer from './components/NoteContainer'
 
@@ -53,15 +49,17 @@ export default {
     }
   },
 
-  methods: {
-    selectNote: function(note) {
+  created() {
+    EventBus.$on('selectNote', (note) =>  {
       this.selectedNote = note
-    },
-    updateSelectedNote: function(body) {
+    });
+
+    EventBus.$on('updateSelectedNote', (body) => {
       this.selectedNote.body = body
       this.selectedNote.timestamp = Date.now()
-    },
-    createNote: function() {
+    });
+
+    EventBus.$on('createNote', () => {
       var newNote = {
         id: Date.now(),
         body: "",
@@ -69,8 +67,9 @@ export default {
       }
       this.notes.push(newNote)
       this.selectedNote = newNote
-    },
-    deleteNote: function() {
+    });
+
+    EventBus.$on('deleteNote', () => {
       var index = this.notes.indexOf(this.selectedNote)
       if(index !== -1) {
         this.notes.splice(index, 1)
@@ -80,16 +79,18 @@ export default {
           this.selectedNote = {}
         }
       }
-    },
-    updateSearch: function(newSearchText) {
+    });
+
+    EventBus.$on('updateSearch', (newSearchText) => {
       this.searchNoteText = newSearchText
-      if(this.transformedNotes.length === 0){
-        this.selectedNote = {}
-      } else if(this.transformedNotes.indexOf(this.selectedNote) === -1) {
-        this.selectedNote = this.transformedNotes[0];
-      }
-    }
+        if(this.transformedNotes.length === 0){
+          this.selectedNote = {}
+        } else if(this.transformedNotes.indexOf(this.selectedNote) === -1) {
+          this.selectedNote = this.transformedNotes[0];
+        }
+    });
   },
+
   computed: {
     transformedNotes: function() {
       return this.notes

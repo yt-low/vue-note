@@ -13,12 +13,13 @@
 </template>
 
 <script>
+import { EventBus } from '../EventBus'
 export default {
 	name: 'note-editor',
 	props: ['selectedNote'],
 	methods: {
 		input: function($event) {
-			this.$emit('inputNoteEditor', $event.target.value)
+			EventBus.$emit('updateSelectedNote', $event.target.value)
 		}
 	}
 }

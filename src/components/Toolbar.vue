@@ -22,18 +22,19 @@
 </template>
 
 <script>
+import { EventBus } from '../EventBus.js'
 export default {
 	name: 'toolbar',
 	props: ['searchNoteText'],
 	methods: {
 		clickNew: function() {
-			this.$emit('clickNew')
+			EventBus.$emit('createNote')
 		},
 		clickDelete: function() {
-			this.$emit('clickDelete')
+			EventBus.$emit('deleteNote')
 		},
 		inputSearchNoteText: function($event) {
-			this.$emit('inputSearchNoteText', $event.target.value)
+			EventBus.$emit('updateSearch', $event.target.value)
 		}
 	}
 }
