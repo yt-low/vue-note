@@ -6,5 +6,5 @@ npm install
 
 npm run dev
 
-# Production
-npm run prod
+# Build for Production
+npm run build
