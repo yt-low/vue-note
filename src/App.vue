@@ -91,6 +91,34 @@ export default {
     });
   },
 
+  mounted (){
+    document.getElementById('note-editor-input').addEventListener('scroll', this.handleScroll);
+  },
+
+  updated () {
+    this.scrollIndicatorVisibility()
+  },
+
+  methods: {
+    handleScroll: function() {
+      var winScroll = document.getElementById('note-editor-input').scrollTop
+      var headerHeight = document.querySelector('.toolbar').clientHeight
+      var scrollbarHeight = document.querySelector('.editor-scrollbar-container').clientHeight
+      var timestampHeight = document.querySelector('.note-editor-info').clientHeight
+      var height = document.getElementById('note-editor-input').scrollHeight - (document.documentElement.clientHeight - (headerHeight + scrollbarHeight + timestampHeight));
+      var scrolled = (winScroll / height) * 100;
+      document.getElementById("editor-scrollbar").style.width = scrolled + "%";
+    },
+
+    scrollIndicatorVisibility: function() {
+      if(document.getElementById('note-editor-input').scrollHeight > document.getElementById('note-editor-input').clientHeight) {
+        document.querySelector('.editor-scrollbar-container').style.height = "8px"
+      } else {
+        document.querySelector('.editor-scrollbar-container').style.height = "0px"
+      }
+    }
+  },
+
   computed: {
     transformedNotes: function() {
       return this.notes
@@ -198,6 +226,7 @@ export default {
 /* TYPOGRAPHY */
 body {
   font-family: sans-serif;
+  overflow: hidden;
 }
 .note-selector-title {
   font-weight: bold;
@@ -206,6 +235,18 @@ body {
   font-size: 0.7em;
 }
 .note-editor, .note-editor-input {
-  font-size: 0.9em;
+  font-size: 1.2em;
+}
+
+.editor-scrollbar-container {
+  width: 100%;
+  height: 8px;
+  background: #ccc;
+}
+
+.editor-scrollbar {
+  height: 8px;
+  background: #4caf50;
+  width: 0%;
 }
 </style>
